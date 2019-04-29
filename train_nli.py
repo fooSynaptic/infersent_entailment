@@ -11,6 +11,9 @@ import time
 import argparse
 
 import numpy as np
+i
+import numpy as np
+import re
 
 import torch
 from torch.autograd import Variable
@@ -235,8 +238,9 @@ def evaluate(epoch, eval_type='valid', final_eval=False):
 
     s1 = valid['s1'] if eval_type == 'valid' else test['s1']
     s2 = valid['s2'] if eval_type == 'valid' else test['s2']
-    s1[:] = [s.replace(' ','').replace('骼','').replace('咙','').replace('痊','').replace('娠','').replace('胳','').replace('瘙','').replace('疙','').replace('瘩','') for s in s1]
-    s2[:] = [s.replace(' ','').replace('骼','').replace('咙','').replace('痊','').replace('娠','').replace('胳','').replace('瘙','').replace('疙','').replace('瘩','') for s in s2]
+    s1[:] = [re.sub('[ 骼咙痊娠胳瘙疙瘩]','*', s, flags=re.IGNORECASE) for s in s1]
+    s1[:] = [re.sub('[ 骼咙痊娠胳瘙疙瘩]','*', s, flags=re.IGNORECASE) for s in s2]
+    
     def hand_keyerror(corpus,vec):
         new_cor = []
         for sen in corpus:
